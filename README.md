@@ -26,21 +26,21 @@ Am început prin importarea bibliotecilor necesare și definirea funcțiilor uti
 
 ## 4. Conversia Fișierului `.txt` într-un JSON Valid
 
-### 4.1. **Eliminarea Spațiilor Inutile**
+  -**4.1.** Eliminarea Spațiilor Inutile**
 
-- Funcția `clean_text_value` elimină spațiile de la începutul și sfârșitul textului și adaugă ghilimele în jurul valorilor, dacă acestea nu sunt deja acoperite de ghilimele.
+    - Funcția `clean_text_value` elimină spațiile de la începutul și sfârșitul textului și adaugă ghilimele în jurul valorilor, dacă acestea nu sunt deja acoperite de ghilimele.
 
-### 4.2. **Adăugarea Ghilimelelor la Chei**
+  -**4.2** Adăugarea Ghilimelelor la Chei**
 
-- Funcția `convert_tags_to_json` adaugă ghilimele în jurul cheilor care nu au deja ghilimele, folosind expresii regulate pentru a modifica textul JSON.
+    - Funcția `convert_tags_to_json` adaugă ghilimele în jurul cheilor care nu au deja ghilimele, folosind expresii regulate pentru a modifica textul JSON.
 
-### 4.3. **Prelucrarea Valorilor Între `"text"` și `"boundingBox"`
+  -**4.3.** Prelucrarea Valorilor Între `"text"` și `"boundingBox"`
 
-- Funcția `convert_tags_to_json` aplică `clean_text_value` pentru a adăuga ghilimele valorilor între `"text":` și `"boundingBox"`.
+    - Funcția `convert_tags_to_json` aplică `clean_text_value` pentru a adăuga ghilimele valorilor între `"text":` și `"boundingBox"`.
 
-### 4.4. **Validarea JSON-ului**
+  -**4.4.** Validarea JSON-ului**
 
-- Funcția `validate_json` încearcă să parseze textul JSON și, în caz de eroare, returnează detalii despre eroare, inclusiv poziția și un fragment al textului din jurul erorii.
+    - Funcția `validate_json` încearcă să parseze textul JSON și, în caz de eroare, returnează detalii despre eroare, inclusiv poziția și un fragment al textului din jurul erorii.
 
 ## 5. Extracția și Curățarea Datelor
 
