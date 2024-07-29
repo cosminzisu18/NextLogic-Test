@@ -34,7 +34,7 @@ Am început prin importarea bibliotecilor necesare și definirea funcțiilor uti
 
 - Funcția `convert_tags_to_json` adaugă ghilimele în jurul cheilor care nu au deja ghilimele, folosind expresii regulate pentru a modifica textul JSON.
 
-### 4.3. **Prelucrarea Valorilor Între `"text"` și `"boundingBox"`
+### 4.3. Prelucrarea Valorilor Între `"text"` și `"boundingBox"`
 
 - Funcția `convert_tags_to_json` aplică `clean_text_value` pentru a adăuga ghilimele valorilor între `"text":` și `"boundingBox"`.
 
