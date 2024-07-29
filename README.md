@@ -24,25 +24,23 @@ Am început prin importarea bibliotecilor necesare și definirea funcțiilor uti
 - `from tkinter import filedialog`: Pentru a deschide un dialog de selectare a fișierelor.
 - `from collections import Counter, defaultdict`: Pentru a utiliza structuri de date specializate, cum ar fi numărătoarele și dicționarele implicite.
 
-## 4. Conversia Fișierului .txt într-un JSON Valid
+## 4. Conversia Fișierului `.txt` într-un JSON Valid
 
-4.1. **Eliminarea Spațiilor Inutile**:
-- Am utilizat funcția `clean_text_value` pentru a elimina spațiile de la începutul și sfârșitul textului.
-- De asemenea, am verificat dacă textul începe și se termină cu ghilimele. Dacă nu, am adăugat ghilimele la începutul și sfârșitul textului, asigurându-ne că nu există ghilimele suplimentare în interior.
+### 4.1. **Eliminarea Spațiilor Inutile**
 
-4.2. **Adăugarea Ghilimelelor la Chei**:
-- Am folosit funcția `convert_tags_to_json` pentru a adăuga ghilimele în jurul cheilor care nu aveau deja ghilimele.
-- Am utilizat expresii regulate pentru a identifica și adăuga ghilimele la toate cheile din textul JSON.
+- Funcția `clean_text_value` elimină spațiile de la începutul și sfârșitul textului și adaugă ghilimele în jurul valorilor, dacă acestea nu sunt deja acoperite de ghilimele.
 
-4.3. **Prelucrarea Valorilor Între "text" și "boundingBox"**:
-- Am folosit expresii regulate pentru a prelua textul dintre "text": și "boundingBox" și am aplicat funcția `add_quotes_to_text_value` pentru a adăuga ghilimele în jurul valorilor respective.
+### 4.2. **Adăugarea Ghilimelelor la Chei**
 
-4.4. **Eliminarea Ghilimelelor Suplimentare**:
-- Am planificat să folosesc o funcție (comentată) pentru a elimina ghilimelele suplimentare dintre cuvinte, dar am decis să nu o aplicăm în această etapă.
+- Funcția `convert_tags_to_json` adaugă ghilimele în jurul cheilor care nu au deja ghilimele, folosind expresii regulate pentru a modifica textul JSON.
 
-4.5. **Validarea JSON-ului**:
-- Am folosit funcția `validate_json` pentru a verifica validitatea JSON-ului.
-- Aceasta încearcă să parseze textul JSON și, în cazul unei erori, returnează detalii despre eroare, inclusiv poziția și un fragment al textului în jurul erorii.
+### 4.3. **Prelucrarea Valorilor Între `"text"` și `"boundingBox"`
+
+- Funcția `convert_tags_to_json` aplică `clean_text_value` pentru a adăuga ghilimele valorilor între `"text":` și `"boundingBox"`.
+
+### 4.4. **Validarea JSON-ului**
+
+- Funcția `validate_json` încearcă să parseze textul JSON și, în caz de eroare, returnează detalii despre eroare, inclusiv poziția și un fragment al textului din jurul erorii.
 
 ## 5. Extracția și Curățarea Datelor
 
