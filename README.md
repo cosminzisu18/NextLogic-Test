@@ -12,147 +12,113 @@ Am ales ca limbaj de programare Python și am folosit Tkinter pentru a crea inte
 
 ## 2. Instalarea Bibliotecilor
 
-- Tkinter vine preinstalat cu majoritatea distribuțiilor de Python, dar poate fi instalat cu comanda `pip install tk`.
+- Tkinter vine preinstalat cu majoritatea distribuțiilor de Python, dar poate fi instalat cu comanda pip install tk.
 - JSON este o bibliotecă standard și nu necesită instalare separată.
 
 ## 3. Crearea Fișierului Python de Bază (main.py)
 
 Am început prin importarea bibliotecilor necesare și definirea funcțiilor utile pentru manipularea și procesarea textului și a datelor JSON:
-- `import json`: Pentru a lucra cu datele în format JSON.
-- `import re`: Pentru a utiliza expresii regulate în vederea extragerii și manipulării textului.
-- `import tkinter as tk`: Pentru a crea interfața grafică.
-- `from tkinter import filedialog`: Pentru a deschide un dialog de selectare a fișierelor.
-- `from collections import Counter, defaultdict`: Pentru a utiliza structuri de date specializate, cum ar fi numărătoarele și dicționarele implicite.
+- import json: Pentru a lucra cu datele în format JSON.
+- import re: Pentru a utiliza expresii regulate în vederea extragerii și manipulării textului.
+- import tkinter as tk: Pentru a crea interfața grafică.
+- from tkinter import filedialog: Pentru a deschide un dialog de selectare a fișierelor.
+- from collections import Counter, defaultdict: Pentru a utiliza structuri de date specializate, cum ar fi numărătoarele și dicționarele implicite.
 
-## 4. Conversia Fișierului `.txt` într-un JSON Valid
-
-Am implementat funcționalități pentru a transforma un fișier text într-un JSON valid.
+## 4. Conversia Fișierului .txt într-un JSON Valid
 
 ### 4.1. **Eliminarea Spațiilor Inutile**
 
-- **Scop**:
-  - Elimină spațiile de la începutul și sfârșitul textului și adaugă ghilimele în jurul valorilor.
-
-- **Funcționalitate**:
-  - Funcția `clean_text_value` curăță textul de spații inutile și se asigură că valorile sunt corect delimitate de ghilimele.
+- Funcția clean_text_value elimină spațiile de la începutul și sfârșitul textului și adaugă ghilimele în jurul valorilor, dacă acestea nu sunt deja acoperite de ghilimele.
 
 ### 4.2. **Adăugarea Ghilimelelor la Chei**
 
-- **Scop**:
-  - Adaugă ghilimele în jurul cheilor din textul JSON care nu au deja ghilimele.
+- Funcția convert_tags_to_json adaugă ghilimele în jurul cheilor care nu au deja ghilimele, folosind expresii regulate pentru a modifica textul JSON.
 
-- **Funcționalitate**:
-  - Funcția `convert_tags_to_json` folosește expresii regulate pentru a modifica textul JSON, adăugând ghilimele acolo unde este necesar.
+### 4.3. Prelucrarea Valorilor Între "text" și "boundingBox"
 
-### 4.3. **Prelucrarea Valorilor Între `"text"` și `"boundingBox"`**
-
-- **Scop**:
-  - Adaugă ghilimele valorilor dintre `"text":` și `"boundingBox"`.
-
-- **Funcționalitate**:
-  - Funcția `convert_tags_to_json` aplică `clean_text_value` pentru a se asigura că valorile sunt corect delimitate în textul JSON.
+- Funcția convert_tags_to_json aplică clean_text_value pentru a adăuga ghilimele valorilor între "text": și "boundingBox".
 
 ### 4.4. **Validarea JSON-ului**
 
-- **Scop**:
-  - Verifică validitatea JSON-ului și returnează detalii despre erori, dacă există.
+- Funcția validate_json încearcă să parseze textul JSON și, în caz de eroare, returnează detalii despre eroare, inclusiv poziția și un fragment al textului din jurul erorii.
 
-- **Funcționalitate**:
-  - Funcția `validate_json` încearcă să parseze textul JSON și, în caz de eroare, returnează informații despre eroare, inclusiv poziția și un fragment din textul din jurul erorii.
 
 ## 5. Extracția și Curățarea Datelor
 
-Am utilizat funcții pentru a extrage și curăța datele din textul JSON, asigurându-ne că sunt corect formatate și relevante.
+Am folosit diverse funcții pentru a extrage și curăța datele din textul JSON, asigurându-ne că datele sunt relevante și corect formatate.
 
 ### 5.1. **Extracția Numărului Cardului**
 
-- **Scop**:
-  - Extrage numerele de card din textul JSON.
-
-- **Funcționalitate**:
-  - Funcția `extract_card_number` utilizează o expresie regulată pentru a identifica și extrage numerele de card în formatul `xxxx xxxxx x`.
+- Funcția extract_card_number utilizează o expresie regulată pentru a extrage numerele de card în formatul xxxx xxxxx x din textul JSON.
 
 ### 5.2. **Extracția Numărului, Numele, Inițiala și Prenumele**
 
-- **Scop**:
-  - Extrage și curăță datele utilizatorilor, inclusiv numele și inițialele, pentru a le prezenta într-un format consistent.
+- **5.2.a.** **Curățarea Datelor pentru a Păstra Doar Cifrele și Majusculele**:
+  - Funcția clean_text elimină literele mici, păstrând doar majusculele și cifrele.
 
-- **Funcționalitate**:
-  - **5.2.a. Curățarea Datelor pentru a Păstra Doar Cifrele și Majusculele**:
-    - Funcția `clean_text` elimină literele mici, păstrând doar majusculele și cifrele.
-  - **5.2.b. Identificarea Celui Mai Repetitiv Cuvânt**:
-    - Funcția `most_common_word` caută și returnează cuvântul cel mai frecvent din text, considerat a fi numele de familie.
-  - **5.2.c. Separarea și Repoziționarea Numele de Familie**:
-    - Funcția `extract_citizen_data` separă numele de familie de restul datelor și îl poziționează la sfârșit.
-  - **5.2.d. Crearea unui Pattern Regex pentru Extracția Datelor într-un Format Specific**:
-    - Funcția `extract_citizen_data` creează un pattern regex pentru a extrage datele într-un format specific, cum ar fi `nr firstname initial lastname`.
-  - **5.2.e. Preluarea Celui Mai Frecvent Nume pentru Fiecare Număr**:
-    - Funcția `most_common_per_number` grupează și identifică cel mai frecvent nume pentru fiecare număr de card.
-  - **5.2.f. Ștergerea Spațiilor Goale de După Sfârșitul Numele Utilizatorului**:
-    - Funcția `clean_user_name` elimină spațiile goale de la sfârșitul numelui utilizatorului.
-  - **5.2.g. Extracția și Păstrarea Textelor care Conțin Cel Mai Frecvent Nume pentru Fiecare Număr**:
-    - Funcția `extract_names` combină funcțiile anterioare pentru a extrage și păstra textele relevante pentru fiecare număr de card.
+- **5.2.b.** **Identificarea Celui Mai Repetitiv Cuvânt**:
+  - Funcția most_common_word caută și returnează cuvântul cel mai frecvent din text, considerat a fi numele de familie.
 
-### 5.3. **Extracția Datei de Expirare**
+- **5.2.c.** **Separarea și Repoziționarea Numele de Familie**:
+  - Funcția extract_citizen_data separă numele de familie de restul datelor și îl poziționează la sfârșit, folosind cel mai comun cuvânt identificat anterior.
 
-- **Scop**:
-  - Extrage data de expirare din textul JSON.
+- **5.2.d.** **Crearea unui Pattern Regex pentru Extracția Datelor într-un Format Specific**:
+  - Funcția extract_citizen_data creează un pattern regex pentru a extrage datele într-un format specific, cum ar fi nr firstname initial lastname.
 
-- **Funcționalitate**:
-  - Funcția `extract_valid_to` caută o dată în formatul "mm/yyyy" și o extrage din textul JSON.
+- **5.2.e.** **Preluarea Celui Mai Frecvent Nume pentru Fiecare Număr**:
+  - Funcția most_common_per_number grupează și identifică cel mai frecvent nume pentru fiecare număr de card, evitând derivatele necorespunzătoare.
+
+- **5.2.f.** **Ștergerea Spațiilor Goale de După Sfârșitul Numele Utilizatorului**:
+  - Funcția clean_user_name elimină spațiile goale de la sfârșitul numelui utilizatorului.
+
+- **5.2.g.** **Extracția și Păstrarea Textelor care Conțin Cel Mai Frecvent Nume pentru Fiecare Număr**:
+  - Funcția extract_names combină funcțiile anterioare pentru a extrage și păstra doar textele care conțin cel mai frecvent nume pentru fiecare număr de card.
+
+
+### 5.3. **Extracția Datei de Expirare**:
+- Am folosit formatul care caută o dată în formatul "mm/yyyy".
+
+  
 
 ## 6. Încărcarea și Procesarea Fișierului
 
-Am implementat funcționalități pentru încărcarea, procesarea și extragerea datelor din fișierul `.txt`.
+Am implementat funcționalități pentru încărcarea, procesarea și extragerea datelor din fișierul .txt, asigurându-ne că datele sunt corect formatate și prezentate.
 
-### 6.1. **Încărcarea Fișierului**
+### 6.1. Încărcarea Fișierului
 
-- **Scop**:
-  - Permite utilizatorului să încarce un fișier text și să-l proceseze.
+- **Funcția upload_file**:
+  - Deschide un dialog pentru selectarea fișierului .txt.
+  - Citește conținutul fișierului folosind encodarea utf-8-sig.
 
-- **Funcționalitate**:
-  - Funcția `upload_file` deschide un dialog pentru selectarea fișierului `.txt` și citește conținutul acestuia folosind encodarea `utf-8-sig`.
+### 6.2. Conversia și Validarea JSON-ului
 
-### 6.2. **Conversia și Validarea JSON-ului**
+- **Conversie**:
+  - Funcția convert_tags_to_json transformă textul în format JSON valid.
+- **Validare**:
+  - Funcția validate_json verifică validitatea JSON-ului și returnează eventualele erori.
 
-- **Scop**:
-  - Transformă textul într-un JSON valid și verifică validitatea acestuia.
+### 6.3. Extracția Datelor
 
-- **Funcționalitate**:
-  - **Conversie**:
-    - Funcția `convert_tags_to_json` transformă textul în format JSON valid.
-  - **Validare**:
-    - Funcția `validate_json` verifică validitatea JSON-ului și returnează eventualele erori.
+- **Funcția extract_text**:
+  - Extrage textul din JSON.
+- **Funcția extract_card_number**:
+  - Utilizează o expresie regulată pentru a extrage numerele de card în formatul xxxx xxxxx x.
+- **Funcția extract_names**:
+  - Extrage și formatează numele utilizatorilor folosind funcții de curățare și identificare a celor mai frecvente nume.
+- **Funcția extract_valid_to**:
+  - Extrage data de validitate folosind o expresie regulată.
 
-### 6.3. **Extracția Datelor**
+### 6.4. Formatul Rezultatelor
 
-- **Scop**:
-  - Extrage datele relevante din JSON și le formatează corespunzător.
+- Rezultatul final este structurat în formatul JSON, dupa cerință:
+  
+json
+  {
+    "cardNumber": "0000 00000 0",
+    "users": ["1 FirstName MiddleNameInitial LastName", ...],
+    "validTo": "00/0000"
+  }
 
-- **Funcționalitate**:
-  - **Funcția `extract_text`**:
-    - Extrage textul din JSON.
-  - **Funcția `extract_card_number`**:
-    - Utilizează o expresie regulată pentru a extrage numerele de card în formatul `xxxx xxxxx x`.
-  - **Funcția `extract_names`**:
-    - Extrage și formatează numele utilizatorilor folosind funcții de curățare și identificare a celor mai frecvente nume.
-  - **Funcția `extract_valid_to`**:
-    - Extrage data de validitate folosind o expresie regulată.
-
-### 6.4. **Formatul Rezultatelor**
-
-- **Scop**:
-  - Prezintă rezultatele într-un format JSON structurat.
-
-- **Funcționalitate**:
-  - Rezultatul final este structurat astfel:
-    ```json
-    {
-      "cardNumber": "0000 00000 0",
-      "users": ["1 FirstName MiddleNameInitial LastName", ...],
-      "validTo": "00/0000"
-    }
-    ```
 
 ## 7. Afișarea Rezultatelor
 
@@ -178,4 +144,4 @@ Am implementat funcția `display_result` pentru a prezenta datele extrase într-
   - **Afișare Data de Validitate**:
     - Creează un cadru pentru data de validitate (`valid_to_frame`) și adaugă textul datei de validitate sau un mesaj alternativ dacă nu a fost găsită nicio dată.
 
-Prin acești pași, am reușit să extrag și să afișez corect datele din fișierul `.txt` într-un format JSON valid și să le prezint într-o interfață grafică ușor de utilizat.
+Prin acești pași, am reușit să extrag și să afișez corect datele din fișierul .txt într-un format JSON valid și să le prezint într-o interfață grafică ușor de utilizat.
