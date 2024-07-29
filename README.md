@@ -45,51 +45,102 @@ Am început prin importarea bibliotecilor necesare și definirea funcțiilor uti
 
 ## 5. Extracția și Curățarea Datelor
 
-Am folosit patternuri pentru a extrage datele din datele JSON și am aplicat ideologii de colectare date, curățarea acestora, eliminând date lipsă sau date irelevante, transformarea datelor, analiza lor pentru a descoperi un tipar:
+Am folosit diverse funcții pentru a extrage și curăța datele din textul JSON, asigurându-ne că datele sunt relevante și corect formatate.
 
-5.1. **Extracția Numărului Cardului**:
-- Am folosit formatul de xxxx xxxxx x.
+### 5.1. **Extracția Numărului Cardului**
 
-5.2. **Extracția Numărului, Numele, Inițiala și Prenumele**:
-- **5.2.a.** Curățarea Datelor pentru a Păstra Doar Cifrele și Majusculele:
-  - Am curățat datele și am afișat inițial numai cifrele și majusculele (mai exact, am înlocuit literele mici cu un șir gol).
-  - Funcția folosită: `remove_lowercase`.
+- Funcția `extract_card_number` utilizează o expresie regulată pentru a extrage numerele de card în formatul `xxxx xxxxx x` din textul JSON.
 
-- **5.2.b.** Păstrarea Doar a Majusculelor și Cifrelor:
-  - Am păstrat doar majusculele, cifrele și spațiile, eliminând orice altceva.
-  - Funcția folosită: `keep_uppercase_and_numbers`.
+### 5.2. **Extracția Numărului, Numele, Inițiala și Prenumele**
 
-- **5.2.c.** Identificarea Celui Mai Repetitiv Cuvânt:
-  - Am căutat cel mai repetitiv cuvânt și l-am considerat nume de familie (am combinat textele într-un șir de caractere, am găsit toate cuvintele de cel puțin 4 caractere, am contorizat aparițiile fiecărui cuvânt și l-am returnat).
-  - Funcția folosită: `most_common_word`.
+- **5.2.a.** **Curățarea Datelor pentru a Păstra Doar Cifrele și Majusculele**:
+  - Funcția `clean_text` elimină literele mici, păstrând doar majusculele și cifrele.
 
-- **5.2.d.** Separarea și Repoziționarea Numele de Familie:
-  - Am separat numele de familie de restul caracterelor și l-am poziționat la sfârșit (împărțind textul în părți bazate pe cel mai comun cuvânt, apoi recompunând textul și afișând numele de familie la final).
-  - Funcția folosită: `separate_common_word`.
+- **5.2.b.** **Identificarea Celui Mai Repetitiv Cuvânt**:
+  - Funcția `most_common_word` caută și returnează cuvântul cel mai frecvent din text, considerat a fi numele de familie.
 
-- **5.2.e.** Crearea unui Pattern Regex pentru Extracția Datelor într-un Format Specific:
-  - Am creat un pattern regex pentru a extrage datele într-un format specific: nr firstname initial lastname.
-  - Funcția folosită: `extract_citizen_data`.
+- **5.2.c.** **Separarea și Repoziționarea Numele de Familie**:
+  - Funcția `extract_citizen_data` separă numele de familie de restul datelor și îl poziționează la sfârșit, folosind cel mai comun cuvânt identificat anterior.
 
-- **5.2.f.** Preluarea Celui Mai Frecvent Nume pentru Fiecare Număr:
-  - Am preluat după fiecare număr (index) cel mai frecvent nume, pentru a nu afișa și anumite derivate ale datelor care ar respecta într-un fel condiția de mai sus.
-  - Funcția folosită: `most_common_per_number`.
+- **5.2.d.** **Crearea unui Pattern Regex pentru Extracția Datelor într-un Format Specific**:
+  - Funcția `extract_citizen_data` creează un pattern regex pentru a extrage datele într-un format specific, cum ar fi `nr firstname initial lastname`.
 
-- **5.2.g.** Ștergerea Spațiilor Goale de După Sfârșitul Numele Utilizatorului:
-  - Am utilizat o funcție pentru a șterge spațiile goale de după sfârșitul numelui utilizatorului.
-  - Funcția folosită: `clean_user_name`.
+- **5.2.e.** **Preluarea Celui Mai Frecvent Nume pentru Fiecare Număr**:
+  - Funcția `most_common_per_number` grupează și identifică cel mai frecvent nume pentru fiecare număr de card, evitând derivatele necorespunzătoare.
 
-- **5.2.h.** Extracția și Păstrarea Textelor care Conțin Cel Mai Frecvent Nume pentru Fiecare Număr:
-  - Am utilizat funcțiile de mai sus pentru a extrage și păstra doar textele care conțin cel mai frecvent nume pentru fiecare număr.
-  - Funcția folosită: `extract_names`.
+- **5.2.f.** **Ștergerea Spațiilor Goale de După Sfârșitul Numele Utilizatorului**:
+  - Funcția `clean_user_name` elimină spațiile goale de la sfârșitul numelui utilizatorului.
 
-5.3. **Extracția Datei de Expirare**:
+- **5.2.g.** **Extracția și Păstrarea Textelor care Conțin Cel Mai Frecvent Nume pentru Fiecare Număr**:
+  - Funcția `extract_names` combină funcțiile anterioare pentru a extrage și păstra doar textele care conțin cel mai frecvent nume pentru fiecare număr de card.
+
+
+### 5.3. **Extracția Datei de Expirare**:
 - Am folosit formatul care caută o dată în formatul "mm/yyyy".
 
-## 6. Crearea și Afișarea Interfeței Grafice
+  
 
-- Am creat o interfață grafică folosind Tkinter pentru a permite utilizatorului să încarce un fișier .txt și să vizualizeze datele extrase.
-- Am creat un buton pentru încărcarea fișierului și etichete pentru a afișa informațiile relevante.
-- Am utilizat un cadru pentru a afișa datele într-un mod structurat și estetic plăcut.
+## 6. Încărcarea și Procesarea Fișierului
+
+Am implementat funcționalități pentru încărcarea, procesarea și extragerea datelor din fișierul `.txt`, asigurându-ne că datele sunt corect formatate și prezentate.
+
+### 6.1. Încărcarea Fișierului
+
+- **Funcția `upload_file`**:
+  - Deschide un dialog pentru selectarea fișierului `.txt`.
+  - Citește conținutul fișierului folosind encodarea `utf-8-sig`.
+
+### 6.2. Conversia și Validarea JSON-ului
+
+- **Conversie**:
+  - Funcția `convert_tags_to_json` transformă textul în format JSON valid.
+- **Validare**:
+  - Funcția `validate_json` verifică validitatea JSON-ului și returnează eventualele erori.
+
+### 6.3. Extracția Datelor
+
+- **Funcția `extract_text`**:
+  - Extrage textul din JSON.
+- **Funcția `extract_card_number`**:
+  - Utilizează o expresie regulată pentru a extrage numerele de card în formatul `xxxx xxxxx x`.
+- **Funcția `extract_names`**:
+  - Extrage și formatează numele utilizatorilor folosind funcții de curățare și identificare a celor mai frecvente nume.
+- **Funcția `extract_valid_to`**:
+  - Extrage data de validitate folosind o expresie regulată.
+
+### 6.4. Formatul Rezultatelor
+
+- Rezultatul final este structurat în formatul JSON, dupa cerință:
+  ```json
+  {
+    "cardNumber": "0000 00000 0",
+    "users": ["1 FirstName MiddleNameInitial LastName", ...],
+    "validTo": "00/0000"
+  }
+
+
+## 7. Afișarea Rezultatelor
+
+Am implementat funcția `display_result` pentru a prezenta datele extrase într-o interfață grafică, folosind Tkinter pentru a crea un layout estetic și informativ.
+
+### 7.1. **Funcția `display_result`**
+
+- **Scop**:
+  - Afișează numărul de card, numele utilizatorilor și data de validitate într-un format structurat.
+
+- **Funcționalitate**:
+  - **Ascunde Elementele Anterioare**:
+    - Funcția ascunde butonul de încărcare a fișierului și informațiile despre tipul de fișier.
+  - **Creare Cadru Rezultate**:
+    - Creează un cadru principal (`result_frame`) pentru afișarea rezultatelor.
+  - **Creare Cadru Interior**:
+    - Adaugă un cadru interior (`inner_frame`) cu un fundal diferit și bordură ridicată.
+  - **Afișare Număr Card**:
+    - Creează un cadru pentru numărul cardului (`card_number_frame`) și adaugă textul numărului de card sau un mesaj alternativ dacă nu a fost găsit niciun număr.
+  - **Afișare Nume Utilizatori**:
+    - Creează un cadru pentru numele utilizatorilor (`users_frame`).
+    - Dacă există nume, le afișează într-un format tabelar. Dacă nu sunt nume, afișează un mesaj alternativ.
+  - **Afișare Data de Validitate**:
+    - Creează un cadru pentru data de validitate (`valid_to_frame`) și adaugă textul datei de validitate sau un mesaj alternativ dacă nu a fost găsită nicio dată.
 
 Prin acești pași, am reușit să extrag și să afișez corect datele din fișierul .txt într-un format JSON valid și să le prezint într-o interfață grafică ușor de utilizat.
